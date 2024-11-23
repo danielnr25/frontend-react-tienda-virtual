@@ -43,7 +43,7 @@ const App = () =>{
 
     return (
         <>
-            <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+            <div className={`transition-all duration-300 ${showNavbar ? "px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]" : ""}`}>
                 {showNavbar && <Header />}
                 <Routes>
                     <Route path="/" element={<Home />} />
