@@ -18,7 +18,7 @@ const Header = () => {
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false); 
 
   return (
-   <div className="bg-white">
+   <div className="bg-white dark:bg-gray-900">
    <header className="absolute inset-x-0 top-0 z-50">
      <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
        <div className="flex lg:flex-1">
@@ -50,7 +50,7 @@ const Header = () => {
        </div>
        <div className="hidden lg:flex lg:flex-1 lg:gap-5 lg:justify-end lg:items-center">
        <MagnifyingGlassIcon aria-hidden="true" className="h-6 w-6 text-gray-900 cursor-pointer" />
-         <NavLink to="/login" className="text-sm font-semibold leading-6 text-gray-900">
+         <NavLink to="/login" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
            <UserIcon className="h-6 w-6 text-gray-900 cursor-pointer" />
          </NavLink>
          <ShoppingCartIcon className="h-6 w-6 text-gray-900 cursor-pointer" />

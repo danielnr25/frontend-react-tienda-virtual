@@ -4,9 +4,7 @@ const Home = () =>{
     
     return(
         <div>
-            Desde el inicio del Home
             <Hero />
-        
         </div>
     )
 }
