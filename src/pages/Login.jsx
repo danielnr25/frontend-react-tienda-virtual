@@ -1,14 +1,15 @@
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink,useNavigate } from "react-router-dom"
 
 
 const Login = () => {
 
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
-
     const [loading,setLoading] = useState(false);
+    const [error,setError] = useState(null)
 
+    const navigate = useNavigate();
     const handleLogin = (e) =>{
         e.preventDefault();
         setLoading(true);
@@ -18,7 +19,33 @@ const Login = () => {
             password
         }
 
-        console.log(data);
+        fetch("http://localhost:3000/auth/login",{
+            method:"POST",
+            headers:{
+              "Content-Type": "application/json"
+            },
+            body:JSON.stringify(data)
+        }).then((response)=>{
+            if(!response.ok){
+                throw new Error("Error en la autentiación");
+            }
+            return response.json();
+        }).then((result)=>{
+            console.log('Resultado de la autenticación:',result)
+            if(result.token){
+                localStorage.setItem("token",result.token)
+                console.log("token guardado:", result.token)
+                navigate('/dashbard');
+            }else{
+                setError("Usuario o contraseña incorrecta");
+            }
+        }).catch((error)=>{
+            console.error("ERROR:",error)
+            setError("Error al iniciar sesión, por favor intente de nuevo");
+        }).finally(()=>{
+            setLoading(false);
+        })
+
     }
 
 
@@ -59,6 +86,10 @@ const Login = () => {
                 <div className="text-center mt-4">
                     <p className="text-base text-gray-800">¿No tienes cuenta? <NavLink to="/register" className="text-blue-700 font-semibold">Regístrate</NavLink></p>
                 </div>
+
+                {error && <p className="text-red-500 font-medium text-base">
+                    {error}    
+                </p>}
                 
             </form>
             </div>
