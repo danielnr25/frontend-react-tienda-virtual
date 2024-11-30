@@ -5,6 +5,9 @@ import About from './pages/About'
 import Collection from './pages/Collection'
 import Dashboard from "./components/Dashboard/Dashboard"
 import { Routes,Route,Navigate,useLocation } from "react-router-dom"
+import CategoriesIndex from "./components/Dashboard/categories/CategoriesIndex"
+import CategoriesForm from "./components/Dashboard/categories/CategoriesForm"
+import ProductIndex from './components/Dashboard/product/ProductIndex'
 
 function parseJwt(token) { // funcion para decodificar el token JWT y obtener la información del usuario, :https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript, nos permite obtener la información del usuario desde el token JWT almacenado en localStorage y verificar si el token es válido. 
     try {
@@ -39,7 +42,7 @@ const App = () =>{
     const tokenValid = isTokenValid();
     const location = useLocation();
 
-    const showNavbar = location.pathname !== '/dashboard';
+    const showNavbar = !location.pathname.startsWith('/admin'); // Ocultar el navbar en las rutas que comienzan con "/admin"
 
     return (
         <>
@@ -50,13 +53,18 @@ const App = () =>{
                     <Route path="/collection" element={<Collection />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element = {tokenValid ? <Navigate to="/dashboard" /> : <Login />} /> 
-                    <Route path="/dashboard" element = {<PrivateRoute element={<Dashboard />} />} /> 
+                    <Route path="/admin/" element = {<PrivateRoute element={<Dashboard />} />}>
+                        <Route path="categories" element={<CategoriesIndex />} />
+                        <Route path="categories/new" element={<CategoriesForm />} />
+                        <Route path="products" element={<ProductIndex />} />
+                    </Route> 
                     <Route path="*" element={<h1>PAGINA NO ENCONTRADA</h1>} />
                 </Routes>
             </div>
         
         </>
-    
+    //   :www.tiendavirtual/admin/categories
+        // ww..../admin/categories/new
       )
     
 }

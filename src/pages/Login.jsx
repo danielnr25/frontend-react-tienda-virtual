@@ -39,7 +39,7 @@ const Login = () => {
               if (result.token) {
                  localStorage.setItem("token", result.token); // Almacenar el token en localStorage
                  console.log("Token guardado:", result.token); // Agregar log
-                 navigate("/dashboard"); // Redirige al Dashboard si el inicio de sesión es exitoso
+                 navigate("/admin"); // Redirige al Dashboard si el inicio de sesión es exitoso
               } else {
                  setError("Usuario o contraseña incorrectos"); // Mostrar un mensaje de error si el inicio de sesión falla
               }
