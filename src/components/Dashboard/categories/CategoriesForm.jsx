@@ -11,7 +11,7 @@ const CategoriesForm = ({ onSubmit, initialData = {} }) => {
     });
 
     const onchangeback = () => {
-        navigate('/admin/categories');
+       navigate('/admin/categories')
     }
     
     const handleChange = (e) => {
@@ -30,7 +30,7 @@ const CategoriesForm = ({ onSubmit, initialData = {} }) => {
         <h2 className="text-2xl font-semibold mb-4">
             {initialData.id ? "Editar Categoría" : "Nueva Categoría"}
         </h2>
-        <button className="text-blue-600 hover:underline" onChange={onchangeback}>
+        <button className="text-blue-600 hover:underline" onClick={onchangeback}>
             Regresar
         </button>
       </div>
