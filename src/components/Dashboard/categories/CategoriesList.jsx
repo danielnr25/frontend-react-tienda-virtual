@@ -1,9 +1,9 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
-
+import { useNavigate } from "react-router-dom";
 
 const CategoriesList = () => {
-
+    const navigate = useNavigate();
     const [categories,setCategories] = useState([]);
     const [loading, setLoading] = useState(null);
     const [error,setError] = useState(false);
@@ -50,6 +50,10 @@ const CategoriesList = () => {
         }
     }
 
+    const handleEditCategory = (id) =>{
+        navigate(`/admin/categories/edit/${id}`);
+    }
+
 
 
     if(loading){
@@ -78,7 +82,10 @@ const CategoriesList = () => {
                         <td className="py-3">{category.nombre}</td>
                         <td className="py-3">{category.descripcion}</td>
                         <td className="py-3 space-x-4">
-                            <button className="bg-blue-800 text-white px-3 py-1.5 rounded-md">Editar</button>
+                            <button
+                                onClick={()=>handleEditCategory(category.id)}
+                                className="bg-blue-800 text-white px-3 py-1.5 rounded-md"
+                            >Editar</button>
                             <button
                                 onClick={()=> openModal(category)} 
                                 className="bg-red-800 text-white px-3 py-1.5 rounded-md"

@@ -1,14 +1,36 @@
-import {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useState,useEffect} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {createCategory,updateCategory,getCategoryById} from '../../../services/categoriesService'
 
 const CategoriesForm = ({ onSubmit, initialData = {} }) => {
     
     const navigate = useNavigate();
+    const {id} = useParams(); // obtener el ID de los parametros de la ruta
     
     const [formData, setFormData] = useState({
         name: initialData.name || "",
         description: initialData.description || "",
     });
+
+    useEffect(() => {
+        if(id){
+            const fetchCategoryData = async() =>{
+                try {
+                    const category = await getCategoryById(id)
+                   setFormData({
+                        name: category.nombre || "",
+                        description:category.descripcion || ""
+                   })
+                } catch (error) {
+                    console.error('Error al cargar la categoria: ',error)
+                }
+            }
+
+            fetchCategoryData()
+        }    
+    
+    }, [id]);
+
 
     const onchangeback = () => {
        navigate('/admin/categories')
@@ -28,7 +50,7 @@ const CategoriesForm = ({ onSubmit, initialData = {} }) => {
     <div className="p-4 bg-white rounded-lg shadow-lg">
       <div className='flex justify-between'>
         <h2 className="text-2xl font-semibold mb-4">
-            {initialData.id ? "Editar Categoría" : "Nueva Categoría"}
+            {id ? "Editar Categoría" : "Nueva Categoría"}
         </h2>
         <button className="text-blue-600 hover:underline" onClick={onchangeback}>
             Regresar
@@ -67,7 +89,7 @@ const CategoriesForm = ({ onSubmit, initialData = {} }) => {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
         >
-          {initialData.id ? "Actualizar Categoría" : "Crear Categoría"}
+          {id ? "Actualizar Categoría" : "Crear Categoría"}
         </button>
       </form>
     </div>

@@ -56,6 +56,7 @@ const App = () =>{
                     <Route path="/admin/" element = {<PrivateRoute element={<Dashboard />} />}>
                         <Route path="categories" element={<CategoriesIndex />} />
                         <Route path="categories/new" element={<CategoriesForm />} />
+                        <Route path="categories/edit/:id" element={<CategoriesForm />} />
                         <Route path="products" element={<ProductIndex />} />
                     </Route> 
                     <Route path="*" element={<h1>PAGINA NO ENCONTRADA</h1>} />

@@ -33,7 +33,7 @@ export const getAllCategories = async() =>{
 }
 
 // obtener una categoria por ID
-export const getCategoryByID = async(id) =>{
+export const getCategoryById = async(id) =>{
     try {
         const response = await axios.get(`${BASE_URL}/${id}`)
         return response.data
