@@ -15,7 +15,6 @@ const CategoriesList = () => {
     const fetchCategories = async() =>{
         try {
             const response = await axios.get("http://localhost:3000/categories");
-            console.log(response.data)
             setCategories(response.data)
             
         } catch (err) {
@@ -38,6 +37,19 @@ const CategoriesList = () => {
         setSelectedCategory(null);
         setIsModalOpen(false)
     }
+
+    const deleteCategory = async() =>{
+       if(!selectedCategory) return
+        try {
+            await axios.delete(`http://localhost:3000/categories/${selectedCategory.id}`)
+            //setCategories(categories.filter((cat)=>cat.id !== selectedCategory.id))
+            fetchCategories();
+            closeModal();
+        } catch (err) {
+            alert("Error al eliminar categoria" + err)
+        }
+    }
+
 
 
     if(loading){
@@ -96,7 +108,7 @@ const CategoriesList = () => {
                 Cancelar
               </button>
               <button
-                
+                onClick={deleteCategory} 
                 className="bg-red-600 text-white px-4 py-2 rounded-md"
               >
                 Eliminar
