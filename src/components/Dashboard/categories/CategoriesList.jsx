@@ -8,6 +8,10 @@ const CategoriesList = () => {
     const [loading, setLoading] = useState(null);
     const [error,setError] = useState(false);
 
+    const [isModalOpen,setIsModalOpen] = useState(false);
+    const [selectedCategory,setSelectedCategory] = useState(null)
+
+
     const fetchCategories = async() =>{
         try {
             const response = await axios.get("http://localhost:3000/categories");
@@ -24,6 +28,17 @@ const CategoriesList = () => {
     useEffect(() => {
         fetchCategories();
     }, []);
+
+    const openModal = (category) =>{
+        setSelectedCategory(category)
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () =>{
+        setSelectedCategory(null);
+        setIsModalOpen(false)
+    }
+
 
     if(loading){
         return <p className="text-xl font-semibold text-blue-600">Cargando categorias</p>
@@ -52,7 +67,10 @@ const CategoriesList = () => {
                         <td className="py-3">{category.descripcion}</td>
                         <td className="py-3 space-x-4">
                             <button className="bg-blue-800 text-white px-3 py-1.5 rounded-md">Editar</button>
-                            <button className="bg-red-800 text-white px-3 py-1.5 rounded-md">Eliminar</button>
+                            <button
+                                onClick={()=> openModal(category)} 
+                                className="bg-red-800 text-white px-3 py-1.5 rounded-md"
+                            >Eliminar</button>
                         </td>
                     </tr>
 
@@ -61,6 +79,35 @@ const CategoriesList = () => {
 
             </tbody>
         </table>
+
+        {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold mb-4">Confirmar eliminación</h2>
+            <p>
+              ¿Estás seguro de que deseas eliminar la categoría{" "}
+              <strong>{selectedCategory?.nombre}</strong>?
+            </p>
+            <div className="flex justify-end mt-6 space-x-4">
+              <button
+                onClick={closeModal}
+                className="bg-gray-400 text-white px-4 py-2 rounded-md"
+              >
+                Cancelar
+              </button>
+              <button
+                
+                className="bg-red-600 text-white px-4 py-2 rounded-md"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
     </div>
   )
 }
