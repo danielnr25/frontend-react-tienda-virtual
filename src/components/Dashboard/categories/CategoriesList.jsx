@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-
+import {deleteCategory,getAllCategories} from '../../../services/categoriesService'
 const CategoriesList = () => {
     const navigate = useNavigate();
     const [categories,setCategories] = useState([]);
@@ -15,6 +15,8 @@ const CategoriesList = () => {
     const fetchCategories = async() =>{
         try {
             const response = await axios.get("http://localhost:3000/categories");
+            //const response = await getAllCategories()
+            //console.log(response)
             setCategories(response.data)
             
         } catch (err) {
@@ -43,6 +45,7 @@ const CategoriesList = () => {
         try {
             await axios.delete(`http://localhost:3000/categories/${selectedCategory.id}`)
             //setCategories(categories.filter((cat)=>cat.id !== selectedCategory.id))
+            //await deleteCategory(selectedCategory.id)
             fetchCategories();
             closeModal();
         } catch (err) {

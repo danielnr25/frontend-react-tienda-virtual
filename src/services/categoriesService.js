@@ -16,6 +16,7 @@ export const createCategory = async(categoryData) => {
 export const updateCategory = async(id,categoryData) =>{
     try {
         const response = await axios.put(`${BASE_URL}/${id}`, categoryData);
+        console.log(response)
         return response.data;
     } catch (error) {
         throw new Error("Error al actualizar la categoria: " + error.message)

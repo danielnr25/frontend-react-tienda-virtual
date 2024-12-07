@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {createCategory,updateCategory,getCategoryById} from '../../../services/categoriesService'
 
-const CategoriesForm = ({ onSubmit, initialData = {} }) => {
+const CategoriesForm = ({ initialData = {} }) => {
     
     const navigate = useNavigate();
     const {id} = useParams(); // obtener el ID de los parametros de la ruta
@@ -41,11 +41,24 @@ const CategoriesForm = ({ onSubmit, initialData = {} }) => {
         setFormData({ ...formData, [name]: value });
     };
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        onSubmit(formData); // Envía los datos al padre o realiza la acción deseada
-        setFormData({ name: "", description: "" }); // Reinicia el formulario tras el envío
+        try {
+            if(id){
+                await updateCategory(id,formData)
+                console.log('se actualizo correctamente')
+            }else{
+               await createCategory(formData)
+               console.log('registrando correctamente')
+            }
+
+            onchangeback();
+        } catch (error) {
+            console.error("Error al procesar la categoria: ",error.message)
+        }
     };
+
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-lg">
       <div className='flex justify-between'>
