@@ -53,7 +53,7 @@ const App = () =>{
                     <Route path="/" element={<Home />} />
                     <Route path="/collection" element={<Collection />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/login" element = {tokenValid ? <Navigate to="/dashboard" /> : <Login />} /> 
+                    <Route path="/login" element = {tokenValid ? <Navigate to="/admin" /> : <Login />} /> 
                     <Route path="/admin/" element = {<PrivateRoute element={<Dashboard />} />}>
                         <Route path="categories" element={<CategoriesIndex />} />
                         <Route path="categories/new" element={<CategoriesForm />} />
