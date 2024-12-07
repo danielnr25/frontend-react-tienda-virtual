@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import {deleteCategory,getAllCategories} from '../../../services/categoriesService'
+//import {deleteCategory,getAllCategories} from '../../../services/categoriesService'
 const CategoriesList = () => {
     const navigate = useNavigate();
     const [categories,setCategories] = useState([]);
@@ -13,6 +13,7 @@ const CategoriesList = () => {
 
 
     const fetchCategories = async() =>{
+        setLoading(true)
         try {
             const response = await axios.get("http://localhost:3000/categories");
             //const response = await getAllCategories()
