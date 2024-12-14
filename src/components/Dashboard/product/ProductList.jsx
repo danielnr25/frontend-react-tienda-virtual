@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-
+import { jwtDecode } from "jwt-decode";
 
 const ProductList = () => {
 
@@ -10,7 +10,7 @@ const ProductList = () => {
     const [products,setProducts] = useState([]);
     const [loading, setLoading] = useState(null);
     const [error,setError] = useState(false);
-
+    const [userRole, setUserRole]  = useState(null);
     const [isModalOpen,setIsModalOpen] = useState(false);
     const [selectedProduct,setSelectedProduct] = useState(null)
 
@@ -29,8 +29,18 @@ const ProductList = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+        const token = localStorage.getItem("token");
+        if(token){
+            const decoded = jwtDecode(token);
+            //console.log(decoded);
+            setUserRole(decoded.role);
+        }else{
+            navigate("/login")
+        }
+    }, [navigate]);
 
+     
+        console.log(userRole)
     const openModal = (product) =>{
         setSelectedProduct(product)
         setIsModalOpen(true);
@@ -84,16 +94,20 @@ const ProductList = () => {
                     <td className="py-3">{product.categorianombre}</td>
                     <td className="py-3">{product.nombre}</td>
                     <td className="py-3">{product.precio}</td>
-                    <td className="py-3 space-x-4">
-                        <button
-                            onClick={()=>handleEditProduct(product.id)}
-                            className="bg-blue-800 text-white px-3 py-1.5 rounded-md"
-                        >Editar</button>
-                        <button
-                            onClick={()=> openModal(product)} 
-                            className="bg-red-800 text-white px-3 py-1.5 rounded-md"
-                        >Eliminar</button>
-                    </td>
+                    {userRole===1? 
+                        <td className="py-3 space-x-4">
+                            <button
+                                onClick={()=>handleEditProduct(product.id)}
+                                className="bg-blue-800 text-white px-3 py-1.5 rounded-md"
+                            >Editar</button>
+                            <button
+                                onClick={()=> openModal(product)} 
+                                className="bg-red-800 text-white px-3 py-1.5 rounded-md"
+                            >Eliminar</button>
+                        </td>
+                    :
+                        <td></td>
+                    }
                 </tr>
             ))}
         </tbody>
