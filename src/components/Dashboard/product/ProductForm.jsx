@@ -3,12 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, updateProduct, getProductById } from '../../../services/productsService'
 const ProductForm = ({ initialData = {} }) => {
 
+
+    const [imageFile,setImageFile] = useState(null);
+
     const navigate = useNavigate();
     const { id } = useParams(); // obtener el ID de los parametros de la ruta
+
     const [formData, setFormData] = useState({
         name: initialData.name || "",
         description: initialData.description || "",
-        image: initialData.image || "",
         category: initialData.category_id || "",
         price: initialData.price || ""
     });
@@ -45,14 +48,27 @@ const ProductForm = ({ initialData = {} }) => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleFileChange = (e) => {
+       setImageFile(e.target.files[0])
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const formDataToSend = new FormData(); // permite crear un objeto
+            
+            formDataToSend.append('name', formData.name)
+            formDataToSend.append('description',formData.description)
+            formDataToSend.append('category_id',formData.category)
+            formDataToSend.append('price',formData.price);
+            if(imageFile){
+                formDataToSend.append('image',imageFile)
+            }
             if (id) {
-                await updateProduct(id, formData)
+                await updateProduct(id, formDataToSend)
                 console.log('se actualizo correctamente')
             } else {
-                await createProduct(formData)
+                await createProduct(formDataToSend)
                 console.log('registrando correctamente')
             }
 
@@ -103,7 +119,7 @@ const ProductForm = ({ initialData = {} }) => {
                     ></textarea>
                 </div>
                 <div>
-                    <label htmlFor="precio" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">
                         Precio
                     </label>
                     <input
@@ -117,6 +133,34 @@ const ProductForm = ({ initialData = {} }) => {
                         required
                     />
                 </div>
+                <div >
+                    <label htmlFor="category_id" className="block text-sm font-medium text-gray-700">Categoria</label>
+                    <select 
+                        id="category_id"
+                        name="category"
+                        value={formData.category} 
+                        onChange={handleChange} 
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    >
+                         <option value="">Seleccione una categoría</option> 
+                        <option value="1">Polos</option>
+                        <option value="2">Pantalones</option>
+                        <option value="3">Zapatos</option>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">Imagen</label>
+                    <input 
+                        type="file" 
+                        name="image" 
+                        id="image" 
+                        onChange={handleFileChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        accept="image/*"
+                    />
+                </div>
+
+
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
