@@ -53,7 +53,9 @@ const Header = () => {
          <NavLink to="/login" className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
            <UserIcon className="h-6 w-6 text-gray-900 cursor-pointer" />
          </NavLink>
-         <ShoppingCartIcon className="h-6 w-6 text-gray-900 cursor-pointer" />
+         <NavLink to="/cart">
+            <ShoppingCartIcon className="h-6 w-6 text-gray-900 cursor-pointer" />
+         </NavLink>
        </div>
      </nav>
      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -96,6 +98,12 @@ const Header = () => {
                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                >
                  Log in
+               </NavLink>
+               <NavLink
+                 to="/cart"
+                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+               >
+                 Carrito
                </NavLink>
              </div>
            </div>
