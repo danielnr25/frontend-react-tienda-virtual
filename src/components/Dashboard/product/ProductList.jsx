@@ -82,6 +82,7 @@ const ProductList = () => {
             <th className="px-4 py-2">Categoria</th>
             <th className="px-4 py-2">Nombre</th>
             <th className="px-4 py-2">Precio</th>
+            <th className="px-4 py-2">Imagen</th>
             <th className="px-4 py-2">Acciones</th>
             </tr>
         </thead>
@@ -94,6 +95,13 @@ const ProductList = () => {
                     <td className="py-3">{product.categorianombre}</td>
                     <td className="py-3">{product.nombre}</td>
                     <td className="py-3">{product.precio}</td>
+                    <td className="py-3">
+                        <img 
+                            src={product.imagen} 
+                            alt={product.nombre} 
+                            className="w-20 h-20 object-cover rounded-md mx-auto"
+                        />
+                    </td>
                     {userRole===1? 
                         <td className="py-3 space-x-4">
                             <button

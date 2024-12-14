@@ -1,35 +1,15 @@
 import axios from "axios"
-import { useState,useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 //import {deleteCategory,getAllCategories} from '../../../services/categoriesService'
-const CategoriesList = () => {
+const CategoriesList = ({categories}) => {
     const navigate = useNavigate();
-    const [categories,setCategories] = useState([]);
-    const [loading, setLoading] = useState(null);
-    const [error,setError] = useState(false);
-
+   
     const [isModalOpen,setIsModalOpen] = useState(false);
     const [selectedCategory,setSelectedCategory] = useState(null)
 
 
-    const fetchCategories = async() =>{
-        setLoading(true)
-        try {
-            const response = await axios.get("http://localhost:3000/categories");
-            //const response = await getAllCategories()
-            //console.log(response)
-            setCategories(response.data)
-            
-        } catch (err) {
-            setError("Error al obtener las categorias: " + err)
-        }finally{
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+  
 
     const openModal = (category) =>{
         setSelectedCategory(category)
@@ -45,9 +25,6 @@ const CategoriesList = () => {
        if(!selectedCategory) return
         try {
             await axios.delete(`http://localhost:3000/categories/${selectedCategory.id}`)
-            //setCategories(categories.filter((cat)=>cat.id !== selectedCategory.id))
-            //await deleteCategory(selectedCategory.id)
-            fetchCategories();
             closeModal();
         } catch (err) {
             alert("Error al eliminar categoria" + err)
@@ -57,14 +34,6 @@ const CategoriesList = () => {
     const handleEditCategory = (id) =>{
         navigate(`/admin/categories/edit/${id}`);
     }
-
-
-
-    if(loading){
-        return <p className="text-xl font-semibold text-blue-600">Cargando categorias</p>
-    }
-
-    if(error) return <p className="text-xl font-semibold text-red-600">{error}</p>
 
 
   return (
