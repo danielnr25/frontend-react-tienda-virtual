@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = "http://localhost:3000/categories"
+const BASE_URL = `${import.meta.env.VITE_API_URL}/categories`;
 
 // crear una categoria
 export const createCategory = async(categoryData) => {
@@ -15,7 +15,7 @@ export const createCategory = async(categoryData) => {
 // actualizar una categoria
 export const updateCategory = async(id,categoryData) =>{
     try {
-        const response = await axios.put(`${BASE_URL}/${id}`, categoryData);
+        const response = await axios.put(BASE_URL+`/${id}`,categoryData)
         console.log(response)
         return response.data;
     } catch (error) {
@@ -36,7 +36,7 @@ export const getAllCategories = async() =>{
 // obtener una categoria por ID
 export const getCategoryById = async(id) =>{
     try {
-        const response = await axios.get(`${BASE_URL}/${id}`)
+        const response = await axios.get(BASE_URL+`/${id}`)
         return response.data
     } catch (error) {
         throw new Error("Error al obtener la categoria: " + error.message)
@@ -45,7 +45,7 @@ export const getCategoryById = async(id) =>{
 
 export const deleteCategory = async(id) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/${id}`)
+        const response = await axios.delete(BASE_URL+`/${id}`)
         return response.data
     } catch (error) {
         throw new Error("Error al eliminar la categoria: " + error.message)

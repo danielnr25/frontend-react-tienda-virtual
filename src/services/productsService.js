@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = "http://localhost:3000/products"
+const BASE_URL = `${import.meta.env.VITE_API_URL}/products`;
 
 // crear un nuevo producto
 export const createProduct = async(productData) => {
@@ -15,7 +15,7 @@ export const createProduct = async(productData) => {
 // actualizar un producto
 export const updateProduct = async(id,productData) =>{
     try {
-        const response = await axios.put(`${BASE_URL}/${id}`, productData);
+        const response = await axios.put(BASE_URL + "/" + id, productData);
         console.log(response)
         return response.data;
     } catch (error) {
@@ -36,7 +36,7 @@ export const getAllProduct = async() =>{
 // obtener un producto por ID
 export const getProductById = async(id) =>{
     try {
-        const response = await axios.get(`${BASE_URL}/${id}`)
+        const response = await axios.get(BASE_URL + "/" + id)
         return response.data
     } catch (error) {
         throw new Error("Error al obtener el producto: " + error.message)
@@ -45,7 +45,7 @@ export const getProductById = async(id) =>{
 
 export const deleteProduct = async(id) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/${id}`)
+        const response = await axios.delete(BASE_URL + "/" + id)
         return response.data
     } catch (error) {
         throw new Error("Error al eliminar el producto: " + error.message)

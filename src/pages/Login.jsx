@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { NavLink,useNavigate } from "react-router-dom"
+const BASE_URL = import.meta.env.VITE_API_URL;
+import { ToastContainer,toast } from "react-toastify";
 
 
 const Login = () => {
@@ -15,13 +17,13 @@ const Login = () => {
         e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
         setLoading(true); // Cambiar el estado de carga a true 
         setError(null); // Limpiar el estado de error
-  
+        
         const data = { // Crear un objeto con los datos del usuario
            username,
            password
         };
   
-        fetch("http://localhost:3000/auth/login", { // Realizar una petición POST a la ruta "/auth/login" del servidor 
+        fetch(`${BASE_URL}/auth/login`, { // Realizar una petición POST a la ruta "/auth/login" del servidor 
            method: "POST", // Método POST
            headers: { 
               "Content-Type": "application/json" // Tipo de contenido JSON
@@ -30,27 +32,34 @@ const Login = () => {
         })
            .then((response) => {  // Manejar la respuesta de la petición
               if (!response.ok) { // Si la respuesta no es exitosa
-                 throw new Error("Error en la autenticación"); // Lanzar un error 
+                navigate("/login")
+                throw new Error("Error en la autenticación"); // Lanzar un error 
               }
               return response.json(); // Devolver la respuesta en formato JSON
+
            })
            .then((result) => {
               console.log("Resultado de la autenticación:", result); // Agregar log, para verificar el resultado de la autenticación 
               if (result.token) {
                  localStorage.setItem("token", result.token); // Almacenar el token en localStorage
                  console.log("Token guardado:", result.token); // Agregar log
+                 toast.success("Inicio de sesión exitoso"); // Mostrar un mensaje de éxito al usuario
                  navigate("/admin"); // Redirige al Dashboard si el inicio de sesión es exitoso
               } else {
                  setError("Usuario o contraseña incorrectos"); // Mostrar un mensaje de error si el inicio de sesión falla
+                 toast.error("Usuario o contraseña incorrectos"); // Mostrar un mensaje de error al usuario
               }
            })
            .catch((error) => {
               console.error("Error:", error); // Agregar log para mostrar el error en la consola
-              setError("Error al iniciar sesión, por favor intente de nuevo."); // Mostrar un mensaje de error al usuario
+              toast.error("Error en la autenticación, verifique su contraseña.");
+              //navigate("/login")
            })
            .finally(() => {
               setLoading(false); // Cambiar el estado de carga a false
            });
+
+           console.log(error);
      }
 
 
@@ -92,8 +101,7 @@ const Login = () => {
                     <p className="text-base text-gray-800">¿No tienes cuenta? <NavLink to="/register" className="text-blue-700 font-semibold">Regístrate</NavLink></p>
                 </div>
 
-                {error && <p className="text-red-500 font-medium text-base">{error}</p>}
-                
+                <ToastContainer />
             </form>
             </div>
         </div>

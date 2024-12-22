@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 //import {deleteCategory,getAllCategories} from '../../../services/categoriesService'
+const BASE_URL = import.meta.env.VITE_API_URL;
 const CategoriesList = ({categories}) => {
     const navigate = useNavigate();
    
@@ -24,7 +25,7 @@ const CategoriesList = ({categories}) => {
     const deleteCategory = async() =>{
        if(!selectedCategory) return
         try {
-            await axios.delete(`http://localhost:3000/categories/${selectedCategory.id}`)
+            await axios.delete(`${BASE_URL}/categories/${selectedCategory.id}`)
             closeModal();
         } catch (err) {
             alert("Error al eliminar categoria" + err)

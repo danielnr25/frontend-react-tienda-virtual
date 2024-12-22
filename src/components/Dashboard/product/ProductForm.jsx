@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, updateProduct, getProductById } from '../../../services/productsService'
+import { getAllCategories } from '../../../services/categoriesService';
 const ProductForm = ({ initialData = {} }) => {
 
-
+    const [categories, setCategories] = useState([]);
     const [imageFile,setImageFile] = useState(null);
 
     const navigate = useNavigate();
@@ -21,11 +22,12 @@ const ProductForm = ({ initialData = {} }) => {
             const fetchCategoryData = async () => {
                 try {
                     const product = await getProductById(id)
+                    console.log(product)
                     setFormData({
                         name: product.nombre || "",
                         description: product.descripcion || "",
                         image: product.imagen || "",
-                        category: product.category_id || "",
+                        category: product.categoria_id || "",
                         price: product.precio || ""
                     })
                 } catch (error) {
@@ -33,8 +35,21 @@ const ProductForm = ({ initialData = {} }) => {
                 }
             }
 
-            fetchCategoryData()
+            fetchCategoryData();
         }
+
+        const fetchCategories = async () =>{
+            try {
+                const categoriesData = await getAllCategories();
+                //console.log(categoriesData);
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Error al cargar las categorias', error);
+            }
+        }
+
+        fetchCategories();
+
 
     }, [id]);
 
@@ -134,18 +149,21 @@ const ProductForm = ({ initialData = {} }) => {
                     />
                 </div>
                 <div >
-                    <label htmlFor="category_id" className="block text-sm font-medium text-gray-700">Categoria</label>
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">Categoria</label>
                     <select 
-                        id="category_id"
+                        id="category"
                         name="category"
                         value={formData.category} 
                         onChange={handleChange} 
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
-                         <option value="">Seleccione una categoría</option> 
-                        <option value="1">Polos</option>
-                        <option value="2">Pantalones</option>
-                        <option value="3">Zapatos</option>
+                        <option value="">Seleccione una categoría</option> 
+                        {categories.map(category =>(
+                            <option value={category.id} key={category.id}>
+                                {category.nombre}
+                            </option>
+
+                        ))}
                     </select>
                 </div>
                 <div>

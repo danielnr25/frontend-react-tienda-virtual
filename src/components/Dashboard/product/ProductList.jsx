@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState,useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
+const BASE_URL = import.meta.env.VITE_API_URL;
 const ProductList = () => {
 
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const ProductList = () => {
     const fetchProducts = async() =>{
         setLoading(true)
         try {
-            const response = await axios.get("http://localhost:3000/products");
+            const response = await axios.get(`${BASE_URL}/products`);
             //const response = await getAllCategories()
             setProducts(response.data)
         } catch (err) {
@@ -54,7 +54,7 @@ const ProductList = () => {
     const deleteProduct = async() =>{
        if(!setSelectedProduct) return
         try {
-            await axios.delete(`http://localhost:3000/products/${selectedProduct.id}`)
+            await axios.delete(`${BASE_URL}/products/${selectedProduct.id}`)
             //setCategories(categories.filter((cat)=>cat.id !== selectedCategory.id))
             //await deleteCategory(selectedCategory.id)
             fetchProducts();
@@ -81,6 +81,7 @@ const ProductList = () => {
             <tr className="text-center uppercase text-base">
             <th className="px-4 py-2">Categoria</th>
             <th className="px-4 py-2">Nombre</th>
+            <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Precio</th>
             <th className="px-4 py-2">Imagen</th>
             <th className="px-4 py-2">Acciones</th>
@@ -94,6 +95,7 @@ const ProductList = () => {
                 >
                     <td className="py-3">{product.categorianombre}</td>
                     <td className="py-3">{product.nombre}</td>
+                    <td className="py-3">{product.stock}</td>
                     <td className="py-3">{product.precio}</td>
                     <td className="py-3">
                         <img 

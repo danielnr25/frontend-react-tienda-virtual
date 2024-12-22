@@ -10,7 +10,7 @@ import CategoriesForm from "./components/Dashboard/categories/CategoriesForm"
 import ProductIndex from './components/Dashboard/product/ProductIndex'
 import ProductForm from "./components/Dashboard/product/ProductForm"
 import Cart from "./pages/Cart"
-
+import "react-toastify/dist/ReactToastify.css";
 function parseJwt(token) { // funcion para decodificar el token JWT y obtener la información del usuario, :https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript, nos permite obtener la información del usuario desde el token JWT almacenado en localStorage y verificar si el token es válido. 
     try {
        const base64url = token.split('.')[1];

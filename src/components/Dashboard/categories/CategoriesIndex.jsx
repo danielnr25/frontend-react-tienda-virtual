@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import CategoriesList from "./CategoriesList"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const CategoriesIndex = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +21,7 @@ const CategoriesIndex = () => {
     useEffect(() => {
         const fetchCategories = async() =>{
             try {
-                const response = await axios.get("http://localhost:3000/categories");
+                const response = await axios.get(`${BASE_URL}/categories`);
                 setAllCategories(response.data);
                 setCategories(response.data)
             } catch (err) {
@@ -37,7 +39,7 @@ const CategoriesIndex = () => {
         }
 
         try {
-            const response = await axios.get(`http://localhost:3000/categories/search?name=${searchTerm}`);
+            const response = await axios.get(`${BASE_URL}/categories/search?name=${searchTerm}`);
             if(response.data.length > 0){
                 setCategories(response.data);
                 setMessage("");
